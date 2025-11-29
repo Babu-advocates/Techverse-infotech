@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { CreateGroupDialog } from "@/components/CreateGroupDialog";
+import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 
 interface Group {
   id: string;
@@ -23,6 +24,14 @@ const Groups = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = useState<Group[]>([]);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [userGroupIds, setUserGroupIds] = useState<string[]>([]);
+
+  // Initialize notification system
+  useMessageNotifications({ 
+    currentUserId, 
+    userGroups: userGroupIds 
+  });
 
   useEffect(() => {
     fetchGroups();
@@ -78,6 +87,9 @@ const Groups = () => {
         return;
       }
       const user = JSON.parse(userStr);
+      
+      // Set current user ID for notifications
+      setCurrentUserId(user.id);
 
       const { data: groupMembers, error: membersError } = await supabase
         .from('group_members')
@@ -88,10 +100,14 @@ const Groups = () => {
 
       if (!groupMembers || groupMembers.length === 0) {
         setGroups([]);
+        setUserGroupIds([]);
         return;
       }
 
       const groupIds = groupMembers.map(gm => gm.group_id);
+      
+      // Update group IDs for notifications
+      setUserGroupIds(groupIds);
 
       // Fetch all data in parallel for better performance
       const [groupsResult, memberCountsResult, lastMessagesResult, unreadMessagesResult, readsResult] = await Promise.all([
