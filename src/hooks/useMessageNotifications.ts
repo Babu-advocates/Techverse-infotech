@@ -14,7 +14,7 @@ export const useMessageNotifications = ({ currentUserId, userGroups }: UseMessag
 
   useEffect(() => {
     // Initialize notification sound
-    notificationSound.current = new Audio('/notification-sound.mp3');
+    notificationSound.current = new Audio('/notification-sound.wav');
     notificationSound.current.volume = 1.0;
 
     // Request notification permissions
@@ -117,7 +117,7 @@ export const useMessageNotifications = ({ currentUserId, userGroups }: UseMessag
                     body: messageText,
                     id: Date.now(),
                     schedule: { at: new Date(Date.now() + 100) },
-                    sound: 'notification-sound.mp3',
+                    sound: 'notification-sound.wav',
                     attachments: undefined,
                     actionTypeId: '',
                     extra: {
