@@ -21,6 +21,8 @@ import AdminGroups from "./pages/admin/AdminGroups";
 import AdminProjects from "./pages/admin/AdminProjects";
 import AdminSupabaseAccounts from "./pages/admin/AdminSupabaseAccounts";
 import AdminGitHubLinks from "./pages/admin/AdminGitHubLinks";
+import { useGlobalNotifications } from "./hooks/useGlobalNotifications";
+
 const queryClient = new QueryClient();
 
 // Protected Route Component
@@ -47,7 +49,11 @@ const MainLayout = ({
       </Layout>
     </ProtectedRoute>;
 };
-const App = () => <QueryClientProvider client={queryClient}>
+const App = () => {
+  // Initialize global notification system
+  useGlobalNotifications();
+  
+  return <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster 
         position="top-center"
@@ -123,4 +129,6 @@ const App = () => <QueryClientProvider client={queryClient}>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>;
+};
+
 export default App;
