@@ -200,7 +200,7 @@ const Profile = () => {
         .update({
           name: formData.name.trim(),
           username: formData.username.trim(),
-          password: formData.password,
+          password: formData.password.trim(),
           profile_photo: formData.profile_photo || null
         })
         .eq('id', user.id);
@@ -212,7 +212,7 @@ const Profile = () => {
         ...user,
         name: formData.name.trim(),
         username: formData.username.trim(),
-        password: formData.password,
+        password: formData.password.trim(),
         profile_photo: formData.profile_photo || null
       };
       localStorage.setItem("user", JSON.stringify(updatedUser));

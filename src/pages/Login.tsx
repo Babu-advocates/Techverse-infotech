@@ -22,8 +22,8 @@ const Login = () => {
       const { data, error } = await supabase
         .from("users")
         .select("*")
-        .eq("username", username)
-        .eq("password", password)
+        .eq("username", username.trim())
+        .eq("password", password.trim())
         .single();
 
       if (error || !data) {
